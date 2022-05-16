@@ -1,0 +1,39 @@
+{
+  "name": "movie-api",
+  "version": "1.0.0",
+  "description": "Movie System",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tijanidevit/movie-system.git"
+  },
+  "keywords": [
+    "mts"
+  ],
+  "author": "Tijani Mustapha Adekunle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tijanidevit/movie-system/issues"
+  },
+  "homepage": "https://github.com/tijanidevit/movie-system#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.0",
+    "express-session": "^1.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.2",
+    "pg": "^8.6.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
