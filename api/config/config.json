@@ -1,24 +1,25 @@
 {
   "development": {
     "username": "root",
-    "password": "123456",
-    "database": "mts",
+    "password": "root",
+    "database": "movies",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql",
+    "port": "8889"
   },
   "test": {
     "username": "root",
     "password": "123456",
     "database": "mts",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "mysql"
   },
   "production": {
-    "username": "lcjaxguwygtbty",
-    "password": "2af5c2bb0d90cb3ed4fc0ef99f02f48b023ec7c9fd1dba5cac9d366dbd9f5f0a",
-    "database": "d2cbgi1f6pu9j0",
-    "host": "ec2-174-129-225-160.compute-1.amazonaws.com",
-    "dialect": "postgres",
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
+    "dialect": "mysql",
     "dialectOptions": {
       "ssl": {
         "require": true,

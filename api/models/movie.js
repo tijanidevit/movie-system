@@ -1,12 +1,12 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class User extends Model {
+  class Movie extends Model {
     static associate({ Comment }) {
       this.hasMany(Comment, { foreignKey: "movieID", as: "comments" });
     }
   }
-  User.init(
+  Movie.init(
     {
       name: {
         type: DataTypes.STRING,
@@ -82,8 +82,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       tableName: "users",
-      modelName: "User",
+      modelName: "Movie",
     }
   );
-  return User;
+  return Movie;
 };

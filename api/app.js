@@ -2,13 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const { sequelize } = require("./models");
 const cors = require("cors");
-const TouristRoute = require("./routes/Tourist");
-const GenderRoute = require("./routes/Gender");
-const StateRoute = require("./routes/State");
-// const LandmarkRoute = require('./routes/Landmark');
-const CategoryRoute = require("./routes/Category");
-const ServiceRoute = require("./routes/Service");
-const PasswordRoute = require("./routes/Password");
+const UserRoute = require("./routes/User");
 
 const app = express();
 
@@ -22,19 +16,16 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get("/", (req, res) => {
-  console.log("Xpat");
+  res.status(200).json({
+    success: true,
+    message: "API Connected",
+  });
+  console.log("API Connected");
 });
 
 // app.use('/uploads', express.static('uploads'));
 
-app.use("/tourists", TouristRoute);
-
-app.use("/genders", GenderRoute);
-app.use("/states", StateRoute);
-app.use("/landmarks/", require("./routes/Landmark"));
-app.use("/services/", ServiceRoute);
-app.use("/categories/", CategoryRoute);
-app.use("/password/", PasswordRoute);
+app.use("/users/", UserRoute);
 
 const PORT = process.env.PORT || 8080;
 
