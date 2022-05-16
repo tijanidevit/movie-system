@@ -16,6 +16,7 @@ const salt = bcrypt.genSaltSync(10);
 
 const { auth } = require("../middlewares/auth");
 const multer = require("multer");
+const { APP_URL } = require("../config/site");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -34,6 +35,8 @@ router.use(
 router.use(bodyParser.json());
 
 router.post("/register", upload.single("profileImage"), async (req, res) => {
+  // var APP_URL = req.protocol + "://" + req.get("host") + "/";
+
   let data = {
     fullname: req.body.fullname,
     password: req.body.password,
@@ -52,15 +55,8 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
       message: "Email Address is required and cannot be empty",
     });
   }
-  // try {
   const check_user_email = await _check_user_email(data.email);
-  // } catch (err) {
-  //   return res.status(400).json({
-  //     success: false,
-  //     message: "User Account Creation Failed" + err,
-  //     error: err,
-  //   });
-  // }
+
   if (check_user_email) {
     res.status(400).json({
       success: false,
@@ -69,6 +65,7 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
   } else {
     try {
       data.password = bcrypt.hashSync(data.password, salt);
+      data.profileImage = APP_URL.concat(data.profileImage);
       const user = await User.create(data);
       let token = jwt.sign(
         {
