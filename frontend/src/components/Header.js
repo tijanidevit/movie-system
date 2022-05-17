@@ -52,28 +52,10 @@ const Header = () => {
               </Link>
             </li>
           )}
-          <li className="nav-item dropdown">
-            <Link
-              className="nav-link dropdown-toggle"
-              to="#"
-              id="navbarDropdown"
-              role="button"
-              data-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Categories
+          <li className="nav-item">
+            <Link className="nav-link" to="/admin">
+              Admin
             </Link>
-            <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-              <Link className="dropdown-item" to="/">
-                Action
-              </Link>
-              <Link className="dropdown-item" to="/">
-                Sci Fi
-              </Link>
-              <Link className="dropdown-item" to="/">
-                Adventorous
-              </Link>
-            </div>
           </li>
         </ul>
       </div>
