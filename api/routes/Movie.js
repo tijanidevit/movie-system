@@ -25,7 +25,8 @@ router.use(
 );
 router.use(bodyParser.json());
 
-router.post("/", upload.single("photo"), async (req, res) => {
+//Add new movie;
+router.post("/", upload.single("photo"), auth, async (req, res) => {
   const data = {
     name: req.body.name,
     description: req.body.description,
@@ -70,7 +71,7 @@ router.post("/", upload.single("photo"), async (req, res) => {
 
 router.get("/", async (req, res) => {
   try {
-    const movies = await Movie.findAll();
+    const movies = await Movie.findAll({ order: [["id", "DESC"]] });
     res.status(200).json({
       success: true,
       message: "Movies Fetch Successful",
@@ -84,12 +85,18 @@ router.get("/", async (req, res) => {
     });
   }
 });
-router.get("/:id", auth, async (req, res) => {
-  const id = req.params.id;
+router.get("/:slug", async (req, res) => {
+  const slug = req.params.slug;
   try {
-    movie = await Movie.findByPk(id, {
-      include: [{ model: Category, as: "category" }],
+    movie = await Movie.findAll({
+      where: {
+        slug,
+      },
     });
+
+    //If genre is later used, {
+    //   include: [{ model: Genre, as: "genre" }],
+    // }
     if (!movie) {
       res.status(200).json({
         success: false,
@@ -123,7 +130,7 @@ router.delete("/:id", async (req, res) => {
   } else {
     try {
       movie.destroy();
-      return res.status(201).json({
+      return res.status(200).json({
         success: true,
         message: "Movie Deleted Successful",
       });
@@ -222,10 +229,10 @@ async function _search_movie(key) {
 }
 
 async function _fetch_movie_comments(movie_id) {
-  aaa = await sequelize.query(
-    "SELECT * FROM comments LEFT OUTER JOIN comments ON comments.id = movie_comments.comment_id WHERE movie_id = ? ",
-    { type: QueryTypes.SELECT, replacements: [movie_id] }
-  );
+  aaa = await sequelize.query("SELECT * FROM comments WHERE movie_id = ? ", {
+    type: QueryTypes.SELECT,
+    replacements: [movie_id],
+  });
   return aaa;
 }
 module.exports = router;

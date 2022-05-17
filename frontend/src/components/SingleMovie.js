@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../assets/style.css";
-const MovieCard = ({ movie }) => {
+export const SingleMovie = ({ movie }) => {
   return (
     <div className="col-md-3 col-sm-6 col-6 mb-2">
       <Link
@@ -27,4 +27,3 @@ const MovieCard = ({ movie }) => {
     </div>
   );
 };
-export default MovieCard;

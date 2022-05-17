@@ -19,7 +19,7 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Landing />} />
             <Route path="/movies" element={<Movies />} />
-            <Route path="/movies/:id" element={<MovieDetails />} />
+            <Route path="/movies/:slug" element={<MovieDetails />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="*">Not Found</Route>
@@ -29,7 +29,7 @@ function App() {
             <Route index element={<AdminLogin />} />
             <Route path="/admin/movies" element={<AdminMovies />} />
             <Route path="/admin/movies/new" element={<AdminAddMovie />} />
-            {/* <Route path="/movies/:id" element={<MovieDetails />} />  */}
+            {/* <Route path="/movies/:slug" element={<MovieDetails />} />  */}
             <Route path="*">Not Found</Route>
           </Route>
         </Routes>
