@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: { msg: "User ID cannot be empty" },
         },
       },
-      movie_id: {
+      movieId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {

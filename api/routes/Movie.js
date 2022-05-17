@@ -147,9 +147,21 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.post("/:id/comments", auth, async (req, res) => {
-  const userID = req.token_data.id;
+  const userId = req.token_data.id;
+
   const movieId = req.params.id;
   var comment = req.body.comment;
+
+  const data = {
+    userId,
+    movieId,
+    comment,
+  };
+
+  // return res.status(200).json({
+  //   success: false,
+  //   message: JSON.stringify(data),
+  // });
   try {
     movie = await Movie.findByPk(movieId);
     if (!movie) {
@@ -158,11 +170,7 @@ router.post("/:id/comments", auth, async (req, res) => {
         message: "Movie Not Found",
       });
     }
-    comment_ = await Comment.create({
-      userID,
-      movieId,
-      comment,
-    });
+    comment_ = await Comment.create(data);
     res.status(200).json({
       success: true,
       message: "Comment Added Successfully",
@@ -234,7 +242,7 @@ async function _search_movie(key) {
 
 async function _fetch_movie_comments(movieId) {
   aaa = await sequelize.query(
-    "SELECT * FROM comments LEFT OUTER JOIN users on users.id = comments.userID WHERE movieId = ? ",
+    "SELECT *, comments.id FROM comments LEFT OUTER JOIN users on users.id = comments.userID WHERE movieId = ? ",
     {
       type: QueryTypes.SELECT,
       replacements: [movieId],

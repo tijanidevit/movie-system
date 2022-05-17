@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +10,7 @@ const CommentSchema = Yup.object().shape({
 });
 
 const AddComment = ({ movie }) => {
+  const navigate = useNavigate();
   const [message, setMessage] = useState("");
   const userToken = localStorage.getItem("userToken");
   return (
@@ -34,6 +35,7 @@ const AddComment = ({ movie }) => {
             let output = res.data;
             if (output.success) {
               alert("Comment Added!");
+              navigate(0);
             } else {
               setMessage(output.message);
             }
