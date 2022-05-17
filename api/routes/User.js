@@ -1,18 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const {
-  User,
-  State,
-  Gender,
-  Landmark,
-  LandmarkVisit,
-  sequelize,
-} = require("../models");
+const { User, sequelize } = require("../models");
 const { QueryTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const salt = bcrypt.genSaltSync(10);
+const cloudinary = require("../helpers/cloudinary");
 
 const { auth } = require("../middlewares/auth");
 const multer = require("multer");
@@ -35,8 +29,6 @@ router.use(
 router.use(bodyParser.json());
 
 router.post("/register", upload.single("profileImage"), async (req, res) => {
-  // var APP_URL = req.protocol + "://" + req.get("host") + "/";
-
   let data = {
     fullname: req.body.fullname,
     password: req.body.password,
@@ -50,7 +42,7 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
     data.email == "" ||
     data.email == null
   ) {
-    res.status(400).json({
+    res.status(200).json({
       success: false,
       message: "Email Address is required and cannot be empty",
     });
@@ -58,14 +50,15 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
   const check_user_email = await _check_user_email(data.email);
 
   if (check_user_email) {
-    res.status(400).json({
+    res.status(200).json({
       success: false,
       message: data.email + " Already Exist",
     });
   } else {
     try {
       data.password = bcrypt.hashSync(data.password, salt);
-      data.profileImage = APP_URL.concat(data.profileImage);
+      const ress = await cloudinary.uploader.upload(req.file.path);
+      data.profileImage = ress.url;
       const user = await User.create(data);
       let token = jwt.sign(
         {
@@ -83,7 +76,7 @@ router.post("/register", upload.single("profileImage"), async (req, res) => {
         token: token,
       });
     } catch (err) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: "User Account Creation Failed" + err,
         error: err,
@@ -96,7 +89,7 @@ router.post("/login", async (req, res) => {
   let email = req.body.email;
   let password = req.body.password;
   if (!email || email == undefined || email == "" || email == null) {
-    res.status(400).json({
+    res.status(200).json({
       success: false,
       message: "Email Address is required and cannot be empty",
     });
@@ -126,14 +119,14 @@ router.post("/login", async (req, res) => {
           token: token,
         });
       } else {
-        res.status(400).json({
+        res.status(200).json({
           success: false,
           message: "Invalid Password",
         });
       }
     }
   } catch (err) {
-    res.status(400).json({
+    res.status(200).json({
       success: false,
       message: "User Not Fetched" + err,
       error: err,

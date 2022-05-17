@@ -1,0 +1,2 @@
+Will be back to change this to genres in the database. Add new tables (genre and movieGenre) => Admin Add Movies (Based on time)
+Alter movies table (drop genre column), movieGenre will be used to link movie and its genres

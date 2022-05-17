@@ -1,6 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from "./components";
-import { Landing, Movies, MovieDetails } from "./pages";
+import {
+  Landing,
+  Movies,
+  MovieDetails,
+  Register,
+  Login,
+  AdminLogin,
+  AdminMovies,
+  AdminAddMovie,
+} from "./pages";
 
 function App() {
   return (
@@ -11,6 +20,16 @@ function App() {
             <Route index element={<Landing />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/movies/:id" element={<MovieDetails />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="*">Not Found</Route>
+          </Route>
+
+          <Route path="/admin">
+            <Route index element={<AdminLogin />} />
+            <Route path="/admin/movies" element={<AdminMovies />} />
+            <Route path="/admin/movies/new" element={<AdminAddMovie />} />
+            {/* <Route path="/movies/:id" element={<MovieDetails />} />  */}
             <Route path="*">Not Found</Route>
           </Route>
         </Routes>
