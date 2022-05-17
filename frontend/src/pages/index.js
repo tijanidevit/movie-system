@@ -6,3 +6,4 @@ export * from "./Login";
 export * from "./admin/AdminLogin";
 export * from "./admin/AdminMovies";
 export * from "./admin/AdminAddMovie";
+export * from "./admin/AdminMovieDetails";

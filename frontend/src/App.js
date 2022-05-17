@@ -9,6 +9,7 @@ import {
   AdminLogin,
   AdminMovies,
   AdminAddMovie,
+  AdminMovieDetails,
 } from "./pages";
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
             <Route index element={<AdminLogin />} />
             <Route path="/admin/movies" element={<AdminMovies />} />
             <Route path="/admin/movies/new" element={<AdminAddMovie />} />
-            {/* <Route path="/movies/:slug" element={<MovieDetails />} />  */}
+            <Route path="/admin/movies/:slug" element={<AdminMovieDetails />} />
             <Route path="*">Not Found</Route>
           </Route>
         </Routes>

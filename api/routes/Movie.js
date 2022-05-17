@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { Movie, Comment } = require("../models");
+const { Movie, Comment, sequelize } = require("../models");
 const { QueryTypes } = require("sequelize");
 const { auth } = require("../middlewares/auth");
 const router = express.Router();
@@ -88,7 +88,7 @@ router.get("/", async (req, res) => {
 router.get("/:slug", async (req, res) => {
   const slug = req.params.slug;
   try {
-    movie = await Movie.findAll({
+    movie = await Movie.findOne({
       where: {
         slug,
       },
@@ -103,11 +103,13 @@ router.get("/:slug", async (req, res) => {
         message: "Movie Not Found",
       });
     } else {
-      movie.comments = await _fetch_movie_comments(id);
+      comments = await _fetch_movie_comments(movie.id);
+      console.log("mv", movie);
+
       res.status(200).json({
         success: true,
         message: "Movie Fetch Successful",
-        data: movie,
+        data: { movie, comments },
       });
     }
   } catch (err) {
@@ -145,24 +147,26 @@ router.delete("/:id", async (req, res) => {
 });
 
 router.post("/:id/comments", auth, async (req, res) => {
-  const user_id = req.token_data.id;
-  const movie_id = req.params.id;
+  const userID = req.token_data.id;
+  const movieId = req.params.id;
+  var comment = req.body.comment;
   try {
-    movie = await Movie.findByPk(movie_id);
+    movie = await Movie.findByPk(movieId);
     if (!movie) {
       res.status(200).json({
         success: false,
         message: "Movie Not Found",
       });
     }
-    comment = await Comment.create({
-      user_id: user_id,
-      movie_id: movie_id,
+    comment_ = await Comment.create({
+      userID,
+      movieId,
+      comment,
     });
     res.status(200).json({
       success: true,
       message: "Comment Added Successfully",
-      data: comment,
+      data: comment_,
     });
   } catch (err) {
     res.status(200).json({
@@ -174,9 +178,9 @@ router.post("/:id/comments", auth, async (req, res) => {
 });
 
 router.get("/:id/comments", async (req, res) => {
-  const movie_id = req.params.id;
+  const movieId = req.params.id;
   try {
-    movie = await Movie.findByPk(movie_id);
+    movie = await Movie.findByPk(movieId);
     if (!movie) {
       res.status(200).json({
         success: false,
@@ -184,7 +188,7 @@ router.get("/:id/comments", async (req, res) => {
       });
     }
     const comments = await Comment.findAll({
-      where: { movie_id: movie_id },
+      where: { movieId: movieId },
       include: [{ model: Tourist, as: "user" }],
     });
     res.status(200).json({
@@ -228,11 +232,14 @@ async function _search_movie(key) {
   return aaa;
 }
 
-async function _fetch_movie_comments(movie_id) {
-  aaa = await sequelize.query("SELECT * FROM comments WHERE movie_id = ? ", {
-    type: QueryTypes.SELECT,
-    replacements: [movie_id],
-  });
+async function _fetch_movie_comments(movieId) {
+  aaa = await sequelize.query(
+    "SELECT * FROM comments LEFT OUTER JOIN users on users.id = comments.userID WHERE movieId = ? ",
+    {
+      type: QueryTypes.SELECT,
+      replacements: [movieId],
+    }
+  );
   return aaa;
 }
 module.exports = router;

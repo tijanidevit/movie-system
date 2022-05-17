@@ -1,10 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { SingleMovie } from "../components";
-import { API_URL } from "../constants";
+import { SingleMovie } from "../../components";
+import { API_URL } from "../../constants";
 
-export const MovieDetails = () => {
+export const AdminMovieDetails = () => {
   let { slug } = useParams();
   const [movie, setMovie] = useState([]);
   const [message, setMessage] = useState("");
@@ -28,7 +28,7 @@ export const MovieDetails = () => {
       <div className="container">
         {movie.length !== 0 && (
           <>
-            <div className="mt-5"></div>
+            <h3 className="text-center mt-5">{movie.movie.name}</h3>
             <SingleMovie movie={movie.movie} comments={movie.comments} />
           </>
         )}

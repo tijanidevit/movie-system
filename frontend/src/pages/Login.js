@@ -38,8 +38,8 @@ export const Login = () => {
             const res = await axios.post(API_URL + "users/login", values);
             let output = res.data;
             if (output.success) {
-              localStorage.setItem("userToken");
-              alert("Login Successful " + localStorage.getItem("userToken"));
+              localStorage.setItem("userToken", output.token);
+              alert("Login Successful ");
               navigate(-1);
             } else {
               setMessage(output.message);

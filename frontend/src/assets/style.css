@@ -2,3 +2,9 @@
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
 }
+
+.movie-name {
+  font-size: 80px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
